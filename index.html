@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shipboard Machinery Suite — Rafael Sukirno, CE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#050f1c;color:#e8eef5;line-height:1.5}
+nav{position:sticky;top:0;z-index:999;background:rgba(5,15,28,.98);backdrop-filter:blur(12px);border-bottom:1px solid #16304d;padding:9px 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.brand{font-weight:800;color:#00d4ff;font-size:14px;margin-right:6px}
+.brand small{color:#7a9ab8;font-weight:400;font-size:10px;display:block}
+.nav-group{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.nav-label{font-size:10px;color:#7a9ab8;text-transform:uppercase;letter-spacing:1px;margin-right:3px}
+.fbtn{background:#0a2030;border:1px solid #16304d;color:#e8eef5;font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;transition:.2s;font-weight:600;white-space:nowrap}
+.fbtn:hover{background:#16304d}
+.fbtn.active{background:#00d4ff;color:#050f1c;border-color:#00d4ff}
+.fbtn.m{background:#2a1a08;border-color:#5a3515;color:#ffb367}
+.fbtn.m.active{background:#ff8c42;color:#050f1c;border-color:#ff8c42}
+.fbtn.e{background:#2a2808;border-color:#5a5515;color:#ffe680}
+.fbtn.e.active{background:#ffd60a;color:#050f1c;border-color:#ffd60a}
+.fbtn.c{background:#0a2a1a;border-color:#155a3a;color:#7ff5b8}
+.fbtn.c.active{background:#00ff9d;color:#050f1c;border-color:#00ff9d}
+.gbtn{display:inline-flex;align-items:center;gap:3px;padding:5px 9px;border-radius:6px;text-decoration:none;font-size:10px;font-weight:700;color:#fff;border:1px solid #16304d;transition:.2s;white-space:nowrap}
+.gbtn:hover{transform:translateY(-1px);filter:brightness(1.2)}
+.gbtn.google{background:#1a3a5c}
+.gbtn.youtube{background:#7a1020}
+.gbtn.wiki{background:#3a3a3a}
+.gbtn.pin{background:#7a1540}
+.gbtn.solas{background:#0d4a3a}
+.gbtn.marpol{background:#1a5a1a}
+.gbtn.imo{background:#0d3a6a}
+.gbtn.class{background:#5a3a0d}
+.searchwrap{padding:9px 14px;background:#0a2030;border-bottom:1px solid #16304d;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.searchwrap input{flex:1;min-width:220px;background:#050f1c;border:1px solid #16304d;color:#e8eef5;padding:8px 12px;border-radius:7px;font-size:13px;outline:none}
+.searchwrap input:focus{border-color:#00d4ff}
+.searchwrap span{font-size:11px;color:#7a9ab8}
+header{padding:22px 18px;text-align:center;background:radial-gradient(circle at 20% 0%,rgba(0,212,255,.15),transparent 60%),radial-gradient(circle at 80% 0%,rgba(255,140,66,.12),transparent 60%),radial-gradient(circle at 50% 100%,rgba(0,255,157,.1),transparent 60%);border-bottom:1px solid #16304d}
+header h1{font-size:22px;background:linear-gradient(90deg,#ff8c42,#ffd60a,#00ff9d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
+header p{color:#7a9ab8;font-size:13px;max-width:900px;margin:0 auto}
+header .credit{margin-top:10px;font-size:12px;color:#00d4ff;border:1px dashed #16304d;display:inline-block;padding:5px 12px;border-radius:20px}
+.overview{padding:18px;max-width:1400px;margin:0 auto}
+.overview h2{font-size:16px;margin-bottom:10px;color:#00d4ff}
+.flow-diagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:14px}
+.flow-box{background:#0a2030;border:1px solid #16304d;border-radius:10px;padding:14px;transition:.25s;cursor:pointer}
+.flow-box:hover{transform:translateY(-3px);border-color:#00d4ff}
+.flow-box.m{border-left:4px solid #ff8c42}
+.flow-box.e{border-left:4px solid #ffd60a}
+.flow-box.c{border-left:4px solid #00ff9d}
+.flow-box h3{font-size:14px;margin-bottom:4px}
+.flow-box .code{font-family:monospace;font-size:10px;letter-spacing:1px;margin-bottom:5px}
+.flow-box.m .code{color:#ff8c42}
+.flow-box.e .code{color:#ffd60a}
+.flow-box.c .code{color:#00ff9d}
+.flow-box p{font-size:11px;color:#7a9ab8;line-height:1.5}
+section{padding:20px 18px;border-top:1px solid #16304d}
+section h2{font-size:18px;margin-bottom:5px;display:flex;align-items:center;gap:10px}
+section h2 .bar{width:5px;height:20px;border-radius:3px;display:inline-block}
+section.m h2 .bar{background:#ff8c42}
+section.e h2 .bar{background:#ffd60a}
+section.c h2 .bar{background:#00ff9d}
+section .desc{color:#7a9ab8;font-size:12px;margin-bottom:14px;max-width:950px}
+.sub{margin-top:16px}
+.sub h4{font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px dashed #16304d}
+section.m .sub h4{color:#ff8c42}
+section.e .sub h4{color:#ffd60a}
+section.c .sub h4{color:#00ff9d}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.item{background:#0a2030;border:1px solid #16304d;border-radius:8px;padding:10px 12px;cursor:pointer;transition:.2s}
+.item:hover{background:#0f3050;transform:translateX(3px)}
+.item.m{border-left:3px solid #ff8c42}
+.item.e{border-left:3px solid #ffd60a}
+.item.c{border-left:3px solid #00ff9d}
+.item.m:hover{border-color:#ff8c42}
+.item.e:hover{border-color:#ffd60a}
+.item.c:hover{border-color:#00ff9d}
+.item .code{font-family:monospace;font-size:10px;letter-spacing:.5px}
+.item.m .code{color:#ffb367}
+.item.e .code{color:#ffe680}
+.item.c .code{color:#7ff5b8}
+.item .name{font-size:13px;font-weight:600;margin-top:2px}
+.item .tag{font-size:10px;color:#7a9ab8;margin-top:4px}
+.welcome-overlay{position:fixed;inset:0;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;transition:opacity .3s}
+.welcome-overlay.hidden{opacity:0;pointer-events:none}
+.welcome{background:linear-gradient(145deg,#0a2030,#050f1c);border:1px solid #00d4ff;border-radius:16px;max-width:880px;width:100%;padding:26px;position:relative;box-shadow:0 20px 60px rgba(0,212,255,.15);animation:wpop .35s ease}
+@keyframes wpop{from{opacity:0;transform:scale(.92) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.welcome .top-badge{display:inline-block;font-size:11px;padding:4px 12px;border-radius:20px;background:rgba(0,212,255,.15);color:#00d4ff;border:1px solid rgba(0,212,255,.4);font-weight:700;letter-spacing:1px;margin-bottom:12px}
+.welcome h2{font-size:22px;background:linear-gradient(90deg,#ff8c42,#ffd60a,#00ff9d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px}
+.welcome .subtitle{color:#7a9ab8;font-size:12px;margin-bottom:16px}
+.welcome .author{display:inline-block;font-size:12px;color:#00d4ff;border:1px dashed #16304d;padding:5px 12px;border-radius:20px;margin-bottom:18px}
+.welcome .choose-title{font-size:12px;color:#7a9ab8;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;text-align:center}
+.welcome .module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:18px}
+.wm-card{background:#050f1c;border:2px solid #16304d;border-radius:12px;padding:14px;cursor:pointer;transition:.25s;text-align:left}
+.wm-card:hover{transform:translateY(-4px)}
+.wm-card.m{border-color:rgba(255,140,66,.4)}
+.wm-card.m:hover{border-color:#ff8c42;background:#231508;box-shadow:0 10px 30px rgba(255,140,66,.2)}
+.wm-card.e{border-color:rgba(255,214,10,.4)}
+.wm-card.e:hover{border-color:#ffd60a;background:#231d08;box-shadow:0 10px 30px rgba(255,214,10,.2)}
+.wm-card.c{border-color:rgba(0,255,157,.4)}
+.wm-card.c:hover{border-color:#00ff9d;background:#0a2018;box-shadow:0 10px 30px rgba(0,255,157,.2)}
+.wm-card .code{font-family:monospace;font-size:10px;letter-spacing:1px;margin-bottom:5px;font-weight:700}
+.wm-card.m .code{color:#ff8c42}
+.wm-card.e .code{color:#ffd60a}
+.wm-card.c .code{color:#00ff9d}
+.wm-card h3{font-size:14px;margin-bottom:5px}
+.wm-card p{font-size:11px;color:#7a9ab8;line-height:1.5}
+.wm-card .cnt{font-size:10px;color:#00d4ff;margin-top:6px;font-weight:600}
+.welcome .welcome-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;border-top:1px solid #16304d;padding-top:14px}
+.wbtn{padding:9px 18px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid #16304d;background:#0a2030;color:#e8eef5;transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.wbtn:hover{transform:translateY(-2px);border-color:#00d4ff}
+.wbtn.primary{background:linear-gradient(135deg,#00d4ff,#00a8cc);color:#050f1c;border-color:#00d4ff}
+.wbtn.primary:hover{filter:brightness(1.1)}
+.wbtn.close-x{background:transparent;color:#7a9ab8;font-size:11px;padding:9px 12px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:flex-start;justify-content:center;padding:20px;z-index:2000;overflow-y:auto;backdrop-filter:blur(4px)}
+.modal-overlay.active{display:flex}
+.modal{background:#0a2030;border:1px solid #16304d;border-radius:14px;max-width:760px;width:100%;padding:22px;position:relative;margin:20px auto;animation:pop .25s}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.modal .close{position:absolute;top:12px;right:14px;background:transparent;border:none;color:#7a9ab8;font-size:22px;cursor:pointer}
+.modal .close:hover{color:#e74c3c}
+.modal .mcode{font-family:monospace;font-size:11px;letter-spacing:1px;color:#00d4ff}
+.modal h3{font-size:20px;margin:5px 0 8px}
+.badge{display:inline-block;font-size:10px;padding:3px 10px;border-radius:20px;margin-bottom:12px;font-weight:600}
+.badge.m{background:rgba(255,140,66,.18);color:#ffb367;border:1px solid rgba(255,140,66,.4)}
+.badge.e{background:rgba(255,214,10,.15);color:#ffe680;border:1px solid rgba(255,214,10,.4)}
+.badge.c{background:rgba(0,255,157,.18);color:#7ff5b8;border:1px solid rgba(0,255,157,.4)}
+.modal .flow{background:#050f1c;border:1px solid #16304d;border-radius:8px;padding:10px;margin:10px 0;font-family:monospace;font-size:11px;color:#00d4ff;word-break:break-word;white-space:pre-wrap}
+.modal p{font-size:12px;color:#b8cfdb;margin-bottom:8px}
+.modal ul{margin:8px 0 12px 18px;font-size:12px}
+.modal li{margin-bottom:3px;color:#dbe9f2}
+.modal .lbl{font-size:11px;color:#7a9ab8;margin-top:10px;display:block}
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid #16304d}
+.links a{display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 6px;border-radius:8px;text-decoration:none;font-size:11px;font-weight:600;color:#fff;background:#050f1c;border:1px solid #16304d;transition:.2s;text-align:center}
+.links a:hover{transform:translateY(-2px);border-color:#00d4ff}
+.links a.g{background:#1a3a5c}.links a.y{background:#4a1220}
+.links a.w{background:#2a2a2a}.links a.p{background:#5a1030}
+.links a.s{background:#0d3a2e}.links a.i{background:#0d2a4a}
+.links a.cl{background:#3a2a0d}.links a.mr{background:#123a12}
+footer{text-align:center;padding:20px 18px;color:#7a9ab8;font-size:11px;border-top:1px solid #16304d;margin-top:16px}
+footer b{color:#00d4ff}
+@media(max-width:600px){header h1{font-size:15px}.grid{grid-template-columns:1fr 1fr}.links{grid-template-columns:1fr 1fr}.welcome h2{font-size:17px}.welcome{padding:18px}.item{padding:8px 10px}.item .name{font-size:12px}}
+</style>
+</head>
+<body>
+
+<!-- WELCOME POPUP -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome">
+    <div class="top-badge">🚢 SELAMAT DATANG</div>
+    <h2>MASTER SHIPBOARD MACHINERY SUITE</h2>
+    <p class="subtitle">Pembelajaran terpadu SELURUH permesinan kapal — dari Main Engine, Steering, Boiler sampai Navigasi, LSA/FFA, Galley & Laundry.</p>
+    <div class="author">Disusun oleh Rafael Sukirno, CE</div>
+    <div class="choose-title">▼ Pilih Modul Utama ▼</div>
+    <div class="module-grid">
+      <div class="wm-card m" onclick="goToModule('mech')">
+        <div class="code">SHIP-MECH</div>
+        <h3>🔧 MECHANICAL</h3>
+        <p>Propulsion, Auxiliary, Pump, Steering, Deck, Cargo, Service, LSA/FFA, Accommodation, Galley, Laundry, Hydraulic, Pneumatic.</p>
+        <div class="cnt" id="wm1">...</div>
+      </div>
+      <div class="wm-card e" onclick="goToModule('elec')">
+        <div class="code">SHIP-ELECT</div>
+        <h3>⚡ ELECTRICAL</h3>
+        <p>Generation, Distribution, Motor & Starter, Protection, Lighting, Battery, Accommodation & Deck Electrical.</p>
+        <div class="cnt" id="wm2">...</div>
+      </div>
+      <div class="wm-card c" onclick="goToModule('ctrl')">
+        <div class="code">SHIP-CONTROL</div>
+        <h3>🧠 CONTROL / AUTOMATION</h3>
+        <p>Instrumentation, PLC, Automation, Actuator (Electric/Hydraulic/Pneumatic), Safety, Bridge & Navigation.</p>
+        <div class="cnt" id="wm3">...</div>
+      </div>
+    </div>
+    <div class="welcome-actions">
+      <button class="wbtn primary" onclick="closeWelcome()">📚 Jelajahi Semua</button>
+      <a class="wbtn" target="_blank" rel="noopener" href="https://www.google.com/search?q=shipboard+machinery+marine+engineering">🔎 Referensi Marine</a>
+      <button class="wbtn close-x" onclick="closeWelcome()">✕ Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="brand">🚢 SHIPBOARD SUITE<small>All Ship Machinery</small></div>
+  <div class="nav-group">
+    <span class="nav-label">Modul:</span>
+    <button class="fbtn active" data-filter="all">Semua</button>
+    <button class="fbtn m" data-filter="mech">Mech</button>
+    <button class="fbtn e" data-filter="elec">Elect</button>
+    <button class="fbtn c" data-filter="ctrl">Control</button>
+  </div>
+  <div class="nav-group" style="margin-left:auto">
+    <span class="nav-label">Googling:</span>
+    <a class="gbtn google" target="_blank" rel="noopener" href="https://www.google.com/search?q=shipboard+machinery">🔎 Google</a>
+    <a class="gbtn youtube" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=ship+machinery+marine+engineering">▶ YT</a>
+    <a class="gbtn wiki" target="_blank" rel="noopener" href="https://en.wikipedia.org/w/index.php?search=ship+machinery">📖 Wiki</a>
+    <a class="gbtn pin" target="_blank" rel="noopener" href="https://www.pinterest.com/search/pins/?q=ship+machinery">📌 Pin</a>
+    <a class="gbtn solas" target="_blank" rel="noopener" href="https://www.google.com/search?q=SOLAS+ship+machinery">⛑ SOLAS</a>
+    <a class="gbtn marpol" target="_blank" rel="noopener" href="https://www.google.com/search?q=MARPOL+ship+machinery">🌊 MARPOL</a>
+    <a class="gbtn imo" target="_blank" rel="noopener" href="https://www.imo.org/en/search/results?q=machinery">🏛 IMO</a>
+    <a class="gbtn class" target="_blank" rel="noopener" href="https://www.google.com/search?q=classification+society+ship+survey">📋 Class</a>
+  </div>
+</nav>
+
+<div class="searchwrap">
+  <input id="q" type="text" placeholder="🔍 Cari: main engine, boiler, radar, lifeboat, galley, crane...">
+  <span id="count">Klik kartu untuk detail</span>
+</div>
+
+<header>
+  <h1>MASTER SHIPBOARD MACHINERY SUITE</h1>
+  <p>Pembelajaran terpadu SELURUH permesinan kapal: <b style="color:#ff8c42">MECHANICAL</b> · <b style="color:#ffd60a">ELECTRICAL</b> · <b style="color:#00ff9d">CONTROL/AUTOMATION</b> — mencakup propulsi, auxiliary, deck, cargo, LSA/FFA, navigasi, akomodasi, galley, laundry, hydraulic & pneumatic.</p>
+  <div class="credit">Disusun oleh Rafael Sukirno, CE</div>
+</header>
+
+<div class="overview">
+  <h2>🔗 FILOSOFI: SATU KAPAL, TIGA SISI</h2>
+  <div class="flow-diagram">
+    <div class="flow-box m" onclick="goToModule('mech')">
+      <div class="code">SHIP-MECH</div>
+      <h3>MECHANICAL — Body & Muscle</h3>
+      <p>Yang bergerak & melakukan kerja: ME, boiler, pompa, steering, crane, LSA, galley, hydraulic, pneumatic.</p>
+    </div>
+    <div class="flow-box e" onclick="goToModule('elec')">
+      <div class="code">SHIP-ELECT</div>
+      <h3>ELECTRICAL — Energy & Blood</h3>
+      <p>Yang memberi tenaga: generator, switchboard, motor, starter, lighting, battery, distribusi.</p>
+    </div>
+    <div class="flow-box c" onclick="goToModule('ctrl')">
+      <div class="code">SHIP-CONTROL</div>
+      <h3>CONTROL — Brain & Nervous</h3>
+      <p>Yang memutuskan: sensor, PLC, autopilot, radar, ECDIS, AIS, actuator, alarm, shutdown.</p>
+    </div>
+  </div>
+</div>
+
+<div id="content"></div>
+
+<footer>
+  <p><b>MASTER SHIPBOARD MACHINERY SUITE</b></p>
+  <p>Pembelajaran terpadu seluruh permesinan kapal niaga</p>
+  <p style="margin-top:6px">Disusun oleh <b>Rafael Sukirno, CE</b> · Chief Engineer</p>
+</footer>
+
+<div class="modal-overlay" id="mo"><div class="modal" id="mc"></div></div>
+
+<script>
+/* =========================================================
+   MASTER SHIPBOARD MACHINERY DATA
+   Format: [m, g, c, n, t, d, f, l] dikompres jadi object
+   ========================================================= */
+const D=[
+// ═══════════ MECHANICAL ═══════════
+
+// A. PROPULSION
+{m:'mech',g:'A. Propulsion Machinery',c:'MainEngine-Mech',n:'Main Engine',t:'Mesin utama',
+ d:'Mesin penggerak utama kapal. Mengubah energi panas bahan bakar menjadi energi mekanik untuk propeller.',
+ f:'Fuel → Combustion → Piston → Crankshaft → Shaft → Propeller',
+ l:['Cylinder','Piston','Crankshaft','Connecting Rod','Fuel Injector','Turbocharger','Governor','Turning Gear']},
+{m:'mech',g:'A. Propulsion Machinery',c:'Shafting-Mech',n:'Propulsion Shafting',t:'Sistem poros',
+ d:'Transmisi tenaga dari engine ke propeller melalui rangkaian poros.',
+ f:'Engine → Intermediate Shaft → Stern Tube → Propeller Shaft → Propeller',
+ l:['Intermediate Shaft','Propeller Shaft','Stern Tube','Bearing','Coupling','Propeller']},
+{m:'mech',g:'A. Propulsion Machinery',c:'Propeller-Mech',n:'Propeller',t:'Baling-baling',
+ d:'Fixed Pitch Propeller (FPP) atau Controllable Pitch Propeller (CPP) yang mendorong kapal.',
+ f:'Shaft Rotation → Blade Thrust → Ship Movement',
+ l:['Blade','Hub','Boss cap','Rope guard','CPP hub mechanism']},
+{m:'mech',g:'A. Propulsion Machinery',c:'BowThruster-Mech',n:'Bow Thruster',t:'Pendorong haluan',
+ d:'Thruster di haluan untuk manuver lateral saat berlabuh/terbatas.',
+ f:'Motor → Gearbox → Propeller Tunnel → Lateral Thrust',
+ l:['Tunnel','Propeller','Gearbox','Motor','Grillage','Grating']},
+{m:'mech',g:'A. Propulsion Machinery',c:'SternThruster-Mech',n:'Stern Thruster',t:'Pendorong buritan',
+ d:'Thruster di buritan untuk tambahan manuver.',
+ f:'Motor → Gearbox → Propeller Tunnel → Thrust',
+ l:['Tunnel','Propeller','Gearbox','Motor']},
+
+// B. AUXILIARY
+{m:'mech',g:'B. Auxiliary Machinery',c:'DieselGen-Mech',n:'Diesel Generator',t:'Genset utama',
+ d:'Mesin diesel penggerak alternator untuk listrik kapal. 2-4 unit redundancy.',
+ f:'Diesel → Alternator → Listrik 440V',
+ l:['Diesel Engine','Alternator interface','Fuel System','Cooling','Lubrication','Exhaust','Governor']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'EmergencyGen-Mech',n:'Emergency Generator',t:'Genset darurat',
+ d:'Genset darurat auto-start saat blackout dalam 45 detik (SOLAS).',
+ f:'Auto Start → Emergency Gen → ESB',
+ l:['Diesel','Generator','Battery start','Emergency fuel tank']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'Boiler-Mech',n:'Boiler',t:'Ketel uap',
+ d:'Menghasilkan steam untuk pemanas, cleaning, dan domestik.',
+ f:'Fuel → Burner → Furnace → Steam Drum → Steam',
+ l:['Burner','Furnace','Steam Drum','Economizer','Safety Valve','Feedwater','Burner Management']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'AirCompressor-Mech',n:'Air Compressor',t:'Kompresor udara',
+ d:'Udara bertekanan untuk starting ME/DG dan control air.',
+ f:'Atmosfer → Compressor → Cooler → Receiver → Consumer',
+ l:['Main Comp','Starting Air Comp','Control Air Comp','Receiver','Cooler','Separator']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'FOPurifier-Mech',n:'FO Purifier',t:'Pemisah bahan bakar',
+ d:'Centrifugal separator untuk membersihkan FO dari air & sludge.',
+ f:'FO → Heater → Separator → Clean FO',
+ l:['Bowl','Disc stack','Heater','Feed pump','Sludge discharge']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'LOPurifier-Mech',n:'LO Purifier',t:'Pemisah minyak lumas',
+ d:'Pemisah untuk memurnikan LO dari kontaminan.',
+ f:'LO → Heater → Separator → Clean LO',
+ l:['Bowl','Heater','Feed pump','Sludge discharge']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'Incinerator-Mech',n:'Incinerator',t:'Pembakar sampah',
+ d:'Membakar sludge oil & garbage sesuai MARPOL Annex VI.',
+ f:'Waste → Burner → Combustion → Ash',
+ l:['Combustion chamber','Burner','Sludge feed','Ash removal']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'SteeringGear-Mech',n:'Steering Gear',t:'Kemudi utama',
+ d:'Sistem hidrolik untuk mengendalikan rudder. Ram / rotary vane type.',
+ f:'Bridge Command → Hydraulic → Actuator → Tiller → Rudder',
+ l:['Hydraulic PU','Ram','Tiller','Rudder Stock','Rudder','Emergency Steering']},
+{m:'mech',g:'B. Auxiliary Machinery',c:'OWS-Mech',n:'Oily Water Separator',t:'Pemisah air-oli',
+ d:'Memisahkan minyak dari bilge water (max 15 ppm sebelum buang).',
+ f:'Bilge Water → Separator → OCM → Overboard',
+ l:['Coalescer','OCM','15ppm alarm','Auto stop valve']},
+
+// C. PUMP SYSTEMS
+{m:'mech',g:'C. Pump Systems',c:'BallastPump-Mech',n:'Ballast Pump',t:'Pompa ballast',
+ d:'Mengisi/mengosongkan tangki ballast untuk stabilitas.',
+ f:'Sea Chest → Ballast Pump → Ballast Tank',
+ l:['Centrifugal Pump','Sea Chest','Valve Manifold']},
+{m:'mech',g:'C. Pump Systems',c:'BilgePump-Mech',n:'Bilge Pump',t:'Pompa bilga',
+ d:'Memindahkan air dari bilga ke bilge tank / OWS.',
+ f:'Bilge Well → Bilge Pump → OWS',
+ l:['Self-priming pump','Bilge main','Valve manifold']},
+{m:'mech',g:'C. Pump Systems',c:'FirePump-Mech',n:'Fire Pump',t:'Pompa pemadam',
+ d:'Main & emergency fire pump untuk supply fire main.',
+ f:'Sea Chest → Fire Pump → Fire Main → Hydrant',
+ l:['Main pump','Emergency pump','Fire main','Hydrant']},
+{m:'mech',g:'C. Pump Systems',c:'GSPump-Mech',n:'General Service Pump',t:'Pompa serba guna',
+ d:'Pompa multifungsi untuk deck washing, service, dll.',
+ f:'Sea Water → GS Pump → Service',
+ l:['Centrifugal pump','Manifold']},
+{m:'mech',g:'C. Pump Systems',c:'SWPump-Mech',n:'Sea Water Pump',t:'Pompa air laut',
+ d:'Supply air laut untuk cooling, flushing, fire.',
+ f:'Sea Chest → SW Pump → Load',
+ l:['Centrifugal pump','Sea Chest','Strainer']},
+{m:'mech',g:'C. Pump Systems',c:'FWPump-Mech',n:'Fresh Water Pump',t:'Pompa air tawar',
+ d:'Supply air tawar untuk cooling dan domestik.',
+ f:'FW Tank → FW Pump → Load',
+ l:['Centrifugal pump']},
+{m:'mech',g:'C. Pump Systems',c:'CoolingPump-Mech',n:'Cooling Water Pump',t:'Pompa pendingin',
+ d:'Mensirkulasi air cooling ke ME/auxiliary.',
+ f:'Cooler → CW Pump → Engine',
+ l:['Pump','Heat exchanger']},
+{m:'mech',g:'C. Pump Systems',c:'FuelPump-Mech',n:'Fuel Oil Pump',t:'Pompa bahan bakar',
+ d:'Transfer & service FO.',
+ f:'FO Tank → FO Pump → Service Tank',
+ l:['Transfer pump','Service pump','Booster pump']},
+{m:'mech',g:'C. Pump Systems',c:'LOPump-Mech',n:'Lube Oil Pump',t:'Pompa minyak lumas',
+ d:'Sirkulasi LO ke engine.',
+ f:'LO Tank → LO Pump → Engine',
+ l:['Main pump','Standby pump']},
+{m:'mech',g:'C. Pump Systems',c:'FeedWaterPump-Mech',n:'Boiler Feed Water Pump',t:'Pompa air umpan',
+ d:'Mensupply feedwater ke boiler.',
+ f:'Feed Tank → Feed Pump → Drum',
+ l:['Multi-stage pump','Regulator']},
+{m:'mech',g:'C. Pump Systems',c:'CargoPump-Mech',n:'Cargo Pump',t:'Pompa muatan',
+ d:'Memindahkan muatan cair dari/ke tangki cargo.',
+ f:'Cargo Tank → Cargo Pump → Manifold',
+ l:['Centrifugal / screw pump','Stripping pump','Deck manifold']},
+{m:'mech',g:'C. Pump Systems',c:'StrippingPump-Mech',n:'Stripping Pump',t:'Pompa pengosong',
+ d:'Mengosongkan sisa muatan di tangki.',
+ f:'Cargo Tank (bottom) → Stripping → Cargo line',
+ l:['Self-priming pump']},
+
+// D. DECK MACHINERY
+{m:'mech',g:'D. Deck Machinery',c:'Windlass-Mech',n:'Anchor Windlass',t:'Mesin jangkar',
+ d:'Mengangkat & menurunkan jangkar beserta rantai.',
+ f:'Motor/Hydraulic → Windlass → Chain → Anchor',
+ l:['Wildcat','Chain stopper','Brake','Motor']},
+{m:'mech',g:'D. Deck Machinery',c:'MooringWinch-Mech',n:'Mooring Winch',t:'Mesin tambat',
+ d:'Menambatkan kapal di dermaga/buoy.',
+ f:'Motor → Drum → Wire → Bitt',
+ l:['Drum','Brake','Motor','Level wind']},
+{m:'mech',g:'D. Deck Machinery',c:'Capstan-Mech',n:'Capstan',t:'Mesin tali vertikal',
+ d:'Winch vertikal untuk menarik tali tambat.',
+ f:'Motor → Capstan Head → Rope',
+ l:['Capstan head','Motor']},
+{m:'mech',g:'D. Deck Machinery',c:'HatchCover-Mech',n:'Hatch Cover',t:'Tutup palka',
+ d:'Menutup cargo hold dengan sistem hidrolik.',
+ f:'Hydraulic → Cylinder → Hatch Panel',
+ l:['Hydraulic cylinder','Locking','Sealing','Drain']},
+{m:'mech',g:'D. Deck Machinery',c:'CargoCrane-Mech',n:'Cargo Crane',t:'Crane muatan',
+ d:'Crane untuk handling muatan di deck.',
+ f:'Motor → Winch → Boom → Hook',
+ l:['Boom','Hoisting winch','Luffing winch','Slew','Hook']},
+{m:'mech',g:'D. Deck Machinery',c:'ProvisionCrane-Mech',n:'Provision Crane',t:'Crane provisi',
+ d:'Crane kecil untuk mengangkat provisi ke akomodasi.',
+ f:'Motor → Boom → Hook',
+ l:['Boom','Winch','Hook']},
+{m:'mech',g:'D. Deck Machinery',c:'AccommodationLadder-Mech',n:'Accommodation Ladder',t:'Tangga akomodasi',
+ d:'Tangga untuk naik/turun dari/ke kapal.',
+ f:'Deck → Ladder → Dock',
+ l:['Ladder','Winch','Safety net']},
+{m:'mech',g:'D. Deck Machinery',c:'Gangway-Mech',n:'Gangway',t:'Jembatan naik',
+ d:'Jembatan penumpang/tamu ke kapal.',
+ f:'Deck → Gangway → Dock',
+ l:['Gangway','Winch','Safety net']},
+
+// E. CARGO SYSTEM
+{m:'mech',g:'E. Cargo System',c:'InertGas-Mech',n:'Inert Gas System (IGS)',t:'Sistem gas inert',
+ d:'Menghasilkan inert gas (flue gas) untuk mencegah kebakaran di tanker.',
+ f:'Boiler Flue Gas → Scrubber → Blower → Cargo Tank',
+ l:['IG Generator','Scrubber','Blower','Deck water seal','Mast riser','O2 analyzer']},
+{m:'mech',g:'E. Cargo System',c:'IGGenerator-Mech',n:'Inert Gas Generator',t:'Generator gas inert',
+ d:'Generator khusus untuk menghasilkan gas inert dari pembakaran.',
+ f:'Fuel → Combustion → Scrubber → Inert Gas',
+ l:['Combustion chamber','Burner','Scrubber','Blower']},
+{m:'mech',g:'E. Cargo System',c:'TankCleaning-Mech',n:'Tank Cleaning Machine',t:'Mesin cuci tank',
+ d:'Mesin putar untuk mencuci cargo tank.',
+ f:'Steam/Water → Nozzle → Tank Wall',
+ l:['Rotary nozzle','Programmer','Pump','Heater']},
+{m:'mech',g:'E. Cargo System',c:'CargoVent-Mech',n:'Cargo Vent System',t:'Ventilasi cargo',
+ d:'Ventilasi tank cargo untuk pressure/vacuum control.',
+ f:'Cargo Tank → Mast Riser → Atmosphere',
+ l:['PV valve','Mast riser','Flame screen','High velocity valve']},
+{m:'mech',g:'E. Cargo System',c:'ButterflyValve-Mech',n:'Cargo Valve',t:'Katup cargo',
+ d:'Katup untuk mengontrol aliran cargo.',
+ f:'Command → Actuator → Valve → Flow',
+ l:['Butterfly/gate valve','Actuator','Position indicator']},
+{m:'mech',g:'E. Cargo System',c:'StrippingEductor-Mech',n:'Eductor / Stripping System',t:'Eductor',
+ d:'Mengosongkan sisa cargo dengan jet pump.',
+ f:'Motive Water → Eductor → Cargo Out',
+ l:['Eductor','Jet nozzle','Motive pump']},
+
+// F. SHIP SERVICE
+{m:'mech',g:'F. Ship Service',c:'FWGenerator-Mech',n:'Fresh Water Generator',t:'Pembuat air tawar',
+ d:'Menghasilkan air tawar dari air laut menggunakan panas jacket water ME.',
+ f:'Sea Water → Evaporator → Condenser → FW',
+ l:['Evaporator','Condenser','Ejector','Salinometer']},
+{m:'mech',g:'F. Ship Service',c:'STP-Mech',n:'Sewage Treatment Plant',t:'Pengolah limbah',
+ d:'Mengolah limbah sanitasi sesuai MARPOL Annex IV.',
+ f:'Sewage → Aeration → Settling → Chlorination → Discharge',
+ l:['Aeration tank','Settling tank','Chlorinator','Discharge pump']},
+{m:'mech',g:'F. Ship Service',c:'Refrigeration-Mech',n:'Refrigeration Plant',t:'Pendingin utama',
+ d:'Sistem refrigerasi untuk AC & cargo reefer.',
+ f:'Compressor → Condenser → Expansion → Evaporator',
+ l:['Compressor','Condenser','Expansion valve','Evaporator']},
+{m:'mech',g:'F. Ship Service',c:'HVAC-Mech',n:'Air Conditioning / HVAC',t:'Tata udara',
+ d:'Mengatur suhu, kelembapan, ventilasi akomodasi.',
+ f:'Cooling/Heating → Fan → Duct → Cabin',
+ l:['AHU','Chiller','Ducting','Fan coil']},
+{m:'mech',g:'F. Ship Service',c:'ProvisionCooling-Mech',n:'Provision Refrigeration',t:'Pendingin provisi',
+ d:'Penyimpanan makanan dingin & beku.',
+ f:'Compressor → Cold Storage',
+ l:['Walk-in cooler','Freezer','Compressor']},
+{m:'mech',g:'F. Ship Service',c:'FreshWaterPressure-Mech',n:'Fresh Water Pressure Set',t:'Pressurized FW',
+ d:'Hydrophore untuk supply air tawar bertekanan ke akomodasi.',
+ f:'FW Tank → Pump → Hydrophore → Accommodation',
+ l:['Pump','Pressure tank','Pressure switch']},
+{m:'mech',g:'F. Ship Service',c:'HotWaterCalorifier-Mech',n:'Hot Water Calorifier',t:'Pemanas air',
+ d:'Pemanas air untuk akomodasi (mandi, cuci).',
+ f:'FW → Heater (steam/electric) → Hot Water',
+ l:['Tank','Heating coil','Thermostat']},
+{m:'mech',g:'F. Ship Service',c:'SewageVaccum-Mech',n:'Vacuum Sewage System',t:'Toilet vakum',
+ d:'Sistem toilet vakum untuk mengurangi konsumsi air.',
+ f:'Toilet → Vacuum → Collecting Tank → STP',
+ l:['Vacuum pump','Collecting tank','Interface valve']},
+
+// G. LSA / FFA / SAFETY
+{m:'mech',g:'G. LSA / FFA / Safety',c:'Lifeboat-Mech',n:'Lifeboat',t:'Sekoci',
+ d:'Sekoci penyelamat sesuai SOLAS LSA Code.',
+ f:'Alarm → Davit → Launch → Water',
+ l:['Hull','Engine','Propeller','Release gear','Equipment']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'RescueBoat-Mech',n:'Rescue Boat',t:'Perahu penyelamat',
+ d:'Perahu cepat untuk rescue & MOB.',
+ f:'Quick Launch → Rescue',
+ l:['Hull','Engine','Davit']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'Davit-Mech',n:'Davit',t:'Peluncur sekoci',
+ d:'Sistem peluncuran lifeboat / rescue boat.',
+ f:'Release → Davit → Boat → Water',
+ l:['Davit arm','Winch','Fall wire','Brake']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'Liferaft-Mech',n:'Liferaft',t:'Rakit penyelamat',
+ d:'Rakit inflatable dengan HRU.',
+ f:'Release → Inflation → Boarding',
+ l:['Container','HRU','Painter line']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'Lifebuoy-Mech',n:'Lifebuoy & Lifejacket',t:'Pelampung',
+ d:'Pelampung & jaket penyelamat sesuai SOLAS.',
+ f:'Emergency → Use',
+ l:['Lifebuoy','Lifejacket','Immersion suit','Pyrotechnics']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'FireMain-Mech',n:'Fire Main System',t:'Jaringan pemadam',
+ d:'Jaringan pipa pemadam kebakaran dengan hydrant.',
+ f:'Fire Pump → Fire Main → Hydrant → Hose',
+ l:['Fire main','Hydrant','Fire hose','Nozzle','Isolation valve']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'FixedCO2-Mech',n:'Fixed CO2 System',t:'Sistem CO2',
+ d:'Sistem pemadam CO2 untuk engine room & cargo hold.',
+ f:'CO2 Bottle → Manifold → Room → Extinguish',
+ l:['CO2 bottles','Manifold','Release valve','Alarm','Time delay']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'FoamSystem-Mech',n:'Foam System',t:'Sistem foam',
+ d:'Pemadam foam untuk cargo tank / deck.',
+ f:'Foam Concentrate + Water → Foam → Fire',
+ l:['Foam tank','Proportioner','Monitor','Applicator']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'SprinklerSystem-Mech',n:'Sprinkler / Water Mist',t:'Sprinkler',
+ d:'Sistem sprinkler untuk akomodasi & machinery space.',
+ f:'Water → Sprinkler Head → Spray',
+ l:['Sprinkler head','Pump','Alarm valve']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'FireExtinguisher-Mech',n:'Fire Extinguisher',t:'APAR',
+ d:'Alat pemadam api ringan (portable).',
+ f:'Pull Pin → Aim → Squeeze → Sweep',
+ l:['Dry powder','CO2','Foam','Water']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'FiremanOutfit-Mech',n:"Fireman's Outfit",t:'Peralatan petugas',
+ d:'Peralatan lengkap petugas pemadam.',
+ f:'BA Set → Suit → Enter Fire Zone',
+ l:['BA set','Protective suit','Helmet','Boots','Safety line']},
+{m:'mech',g:'G. LSA / FFA / Safety',c:'EEBD-Mech',n:'EEBD',t:'Emergency escape',
+ d:'Emergency Escape Breathing Device untuk jalur evakuasi.',
+ f:'Emergency → Use EEBD → Escape',
+ l:['Hood','Air cylinder','Regulator']},
+
+// H. HYDRAULIC & PNEUMATIC
+{m:'mech',g:'H. Hydraulic & Pneumatic',c:'HydraulicPU-Mech',n:'Hydraulic Power Unit',t:'Unit tenaga hidrolik',
+ d:'Unit pompa hidrolik untuk berbagai sistem (steering, hatch, crane, windlass).',
+ f:'Motor → Pump → Valve → Cylinder → Work',
+ l:['Hydraulic pump','Oil tank','Cooler','Filter','Accumulator','Relief valve']},
+{m:'mech',g:'H. Hydraulic & Pneumatic',c:'HydraulicCylinder-Mech',n:'Hydraulic Cylinder',t:'Silinder hidrolik',
+ d:'Aktuator hidrolik untuk gerakan linear.',
+ f:'Pressure Oil → Piston → Rod → Linear Motion',
+ l:['Barrel','Piston','Rod','Seals','End caps']},
+{m:'mech',g:'H. Hydraulic & Pneumatic',c:'HydraulicMotor-Mech',n:'Hydraulic Motor',t:'Motor hidrolik',
+ d:'Aktuator hidrolik untuk gerakan putar.',
+ f:'Oil Flow → Motor → Rotation',
+ l:['Gear / vane / piston motor']},
+{m:'mech',g:'H. Hydraulic & Pneumatic',c:'HydraulicValve-Mech',n:'Hydraulic Valve',t:'Katup hidrolik',
+ d:'Directional, relief, pressure control valve untuk sistem hidrolik.',
+ f:'Command → Valve → Flow Direction',
+ l:['Directional valve','Relief valve','Flow control','Servo valve']},
+{m:'mech',g:'H. Hydraulic & Pneumatic',c:'PneumaticSystem-Mech',n:'Pneumatic System',t:'Sistem pneumatik',
+ d:'Sistem udara bertekanan untuk control valve, actuator, tools.',
+ f:'Air Receiver → Filter → Regulator → Valve → Actuator',
+ l:['Air receiver','Filter-regulator','Solenoid valve','Cylinder','Air motor']},
+{m:'mech',g:'H. Hydraulic & Pneumatic',c:'AirDryer-Mech',n:'Air Dryer',t:'Pengering udara',
+ d:'Mengeringkan udara bertekanan untuk control air & instrument.',
+ f:'Air → Cooler → Dryer → Dry Air',
+ l:['Refrigerant dryer','Desiccant dryer','Auto drain']},
+
+// I. ACCOMMODATION, GALLEY, LAUNDRY
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'GalleyRange-Mech',n:'Galley Range / Oven',t:'Tungku dapur',
+ d:'Kompor & oven untuk memasak ABK. Bisa electric atau oil-fired.',
+ f:'Fuel/Electric → Heater → Cooking Surface',
+ l:['Burner','Oven','Exhaust hood','Fire blanket']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'GalleySteamer-Mech',n:'Galley Steamer / Steam Kettle',t:'Pemasak uap',
+ d:'Pemasak menggunakan steam untuk nasi, sayur, dll.',
+ f:'Steam → Kettle Jacket → Food',
+ l:['Jacket','Steam valve','Safety valve']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'GalleyFryer-Mech',n:'Deep Fryer',t:'Penggorengan',
+ d:'Penggorengan deep fryer untuk ayam, kentang.',
+ f:'Electric → Oil → Fry',
+ l:['Oil tank','Heating element','Thermostat']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'GalleyExhaust-Mech',n:'Galley Exhaust Hood',t:'Hood dapur',
+ d:'Hood dengan exhaust & grease filter untuk dapur.',
+ f:'Fume → Hood → Duct → Atmosphere',
+ l:['Hood','Grease filter','Exhaust fan','Fire damper']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'GalleyRefrigerator-Mech',n:'Galley Refrigerator',t:'Kulkas dapur',
+ d:'Kulkas untuk penyimpanan bahan makanan harian.',
+ f:'Compressor → Evaporator → Cold',
+ l:['Compressor','Evaporator','Condenser']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'LaundryWasher-Mech',n:'Laundry Washing Machine',t:'Mesin cuci',
+ d:'Mesin cuci untuk pakaian ABK. Bisa industrial size.',
+ f:'Water + Detergent + Drum → Washing',
+ l:['Drum','Motor','Water inlet','Drain pump']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'LaundryDryer-Mech',n:'Laundry Dryer',t:'Pengering pakaian',
+ d:'Pengering pakaian dengan pemanas.',
+ f:'Air Heated → Tumble → Dry',
+ l:['Heating element','Drum','Exhaust']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'LaundryIroner-Mech',n:'Laundry Ironer / Press',t:'Setrika',
+ d:'Setrika & press untuk pakaian.',
+ f:'Heated Surface → Press',
+ l:['Heating plate','Steam valve','Roller']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'SanitarySystem-Mech',n:'Sanitary System',t:'Sanitasi',
+ d:'Sistem air bersih, air kotor, dan WC di akomodasi.',
+ f:'FW → Toilet/Sink → Sewage → STP',
+ l:['Toilet','Sink','Shower','Drain','Sewage line']},
+{m:'mech',g:'I. Accommodation & Galley & Laundry',c:'FurnitureAccom-Mech',n:'Accommodation Furniture',t:'Perabot akomodasi',
+ d:'Furniture & fixture kabin, mess, lounge.',
+ f:'Fixed to Deck/Wall',
+ l:['Bed','Locker','Table','Chair','Sofa']},
+
+// ═══════════ ELECTRICAL ═══════════
+{m:'elec',g:'A. Power Generation',c:'DG-Elect',n:'Diesel Generator Electrical',t:'Genset elektrikal',
+ d:'Sisi elektrikal Diesel Generator: alternator hingga generator breaker.',
+ f:'Diesel → Alternator → AVR → Gen Breaker → MSB',
+ l:['Alternator','AVR','Excitation','Breaker','Sync']},
+{m:'elec',g:'A. Power Generation',c:'Alternator-Elect',n:'Alternator',t:'Alternator',
+ d:'Mengubah energi mekanik menjadi listrik AC 3-phase.',
+ f:'Prime Mover → Rotor → Stator → AC Output',
+ l:['Stator','Rotor','Exciter','AVR','Cooling']},
+{m:'elec',g:'A. Power Generation',c:'EmergencyGen-Elect',n:'Emergency Generator Electrical',t:'Genset darurat',
+ d:'Sisi elektrikal emergency generator.',
+ f:'Emergency Gen → ESB',
+ l:['Alternator','Breaker','Emergency Bus']},
+{m:'elec',g:'A. Power Generation',c:'ShaftGenerator-Elect',n:'Shaft Generator',t:'Genset poros',
+ d:'Generator yang dipasang di shaft propeller untuk recovery energi.',
+ f:'Shaft Rotation → Shaft Gen → MSB',
+ l:['Shaft alternator','Gearbox','Frequency converter']},
+{m:'elec',g:'A. Power Generation',c:'ShorePower-Elect',n:'Shore Connection',t:'Koneksi darat',
+ d:'Koneksi listrik dari darat (cold ironing).',
+ f:'Shore → Shore Box → MSB',
+ l:['Shore box','Cable reel','Changeover']},
+
+{m:'elec',g:'B. Distribution',c:'MSB-Elect',n:'Main Switchboard',t:'Papan hubung utama',
+ d:'Pusat distribusi listrik kapal.',
+ f:'Generator → Busbar → Feeder → Consumer',
+ l:['Busbar','ACB','Feeder breaker','Metering','Sync','Protection']},
+{m:'elec',g:'B. Distribution',c:'ESB-Elect',n:'Emergency Switchboard',t:'Papan darurat',
+ d:'Distribusi darurat dari emergency generator.',
+ f:'Emergency Gen → ESB → Emergency Load',
+ l:['Busbar','Breaker','Emergency feeder']},
+{m:'elec',g:'B. Distribution',c:'DB-Elect',n:'Distribution Board',t:'Papan distribusi',
+ d:'Panel distribusi lokal di berbagai area.',
+ f:'MSB/MCC → DB → Local Load',
+ l:['MCB','Busbar']},
+{m:'elec',g:'B. Distribution',c:'MCC-Elect',n:'Motor Control Center',t:'Panel motor',
+ d:'Kumpulan starter motor di satu lokasi.',
+ f:'MSB → MCC → Starter → Motor',
+ l:['Busbar','Grouped starters','Protection','Control']},
+{m:'elec',g:'B. Distribution',c:'PanelDeck-Elect',n:'Deck Distribution Panel',t:'Panel deck',
+ d:'Distribusi listrik ke deck machinery.',
+ f:'MSB → Deck Panel → Deck Equipment',
+ l:['MCB','Busbar','Contactor']},
+{m:'elec',g:'B. Distribution',c:'PanelAccom-Elect',n:'Accommodation Panel',t:'Panel akomodasi',
+ d:'Distribusi listrik untuk akomodasi.',
+ f:'MSB → Accom Panel → Cabin Load',
+ l:['MCB','RCCB','Busbar']},
+
+{m:'elec',g:'C. Motor & Starter',c:'Motor-Elect',n:'Electric Motor',t:'Motor listrik',
+ d:'Motor induksi/sinkron — aktuator utama di kapal.',
+ f:'Electrical → Rotation',
+ l:['Stator','Rotor','Bearing','Cooling']},
+{m:'elec',g:'C. Motor & Starter',c:'DOL-Elect',n:'DOL Starter',t:'Direct On Line',
+ d:'Starter sederhana full voltage untuk motor kecil.',
+ f:'MCB → Contactor → Motor',
+ l:['Contactor','Overload','Push button']},
+{m:'elec',g:'C. Motor & Starter',c:'StarDelta-Elect',n:'Star-Delta Starter',t:'Star-Delta',
+ d:'Starter reduced current untuk motor besar.',
+ f:'Star → Timer → Delta',
+ l:['Main contactor','Star','Delta','Timer']},
+{m:'elec',g:'C. Motor & Starter',c:'SoftStarter-Elect',n:'Soft Starter',t:'Soft start',
+ d:'Starter thyristor ramp.',
+ f:'Ramp → Motor',
+ l:['Thyristor','Bypass']},
+{m:'elec',g:'C. Motor & Starter',c:'VFD-Elect',n:'VFD Drive',t:'VFD',
+ d:'Variable Frequency Drive untuk kontrol kecepatan.',
+ f:'AC → DC → AC (var freq) → Motor',
+ l:['Rectifier','DC Bus','Inverter','Control']},
+{m:'elec',g:'C. Motor & Starter',c:'ServoDrive-Elect',n:'Servo Drive',t:'Servo drive',
+ d:'Drive untuk servo motor presisi tinggi.',
+ f:'Command → Servo Drive → Servo Motor',
+ l:['Servo amplifier','Encoder feedback','Motion controller']},
+
+{m:'elec',g:'D. Protection',c:'Breaker-Elect',n:'Circuit Breaker',t:'Pemutus',
+ d:'MCB/MCCB/ACB untuk proteksi overcurrent.',
+ f:'Fault → Trip → Isolate',
+ l:['MCB','MCCB','ACB','Trip unit']},
+{m:'elec',g:'D. Protection',c:'Fuse-Elect',n:'Fuse',t:'Sekring',
+ d:'Proteksi overcurrent sekali pakai.',
+ f:'Overcurrent → Melt → Open',
+ l:['Fuse element','Holder']},
+{m:'elec',g:'D. Protection',c:'Overload-Elect',n:'Overload Protection',t:'Overload',
+ d:'Thermal/magnetic overload relay motor.',
+ f:'Overload → Thermal trip',
+ l:['Thermal','Magnetic']},
+{m:'elec',g:'D. Protection',c:'EarthFault-Elect',n:'Earth Fault Protection',t:'Arus bocor',
+ d:'Deteksi arus bocor ke ground.',
+ f:'Leakage → Alarm/Trip',
+ l:['EF relay','Insulation monitor']},
+{m:'elec',g:'D. Protection',c:'GenProtection-Elect',n:'Generator Protection',t:'Proteksi generator',
+ d:'Proteksi lengkap generator.',
+ f:'Fault → Trip Gen Breaker',
+ l:['Reverse power','Over/Under V','Over/Under F','Diff','Overcurrent']},
+{m:'elec',g:'D. Protection',c:'SurgeProtection-Elect',n:'Surge Protection',t:'Proteksi surge',
+ d:'SPD untuk proteksi dari surge tegangan.',
+ f:'Surge → SPD → Ground',
+ l:['SPD','Grounding']},
+
+{m:'elec',g:'E. Lighting',c:'Lighting-Elect',n:'Lighting System',t:'Penerangan',
+ d:'Pencahayaan umum kapal.',
+ f:'MSB → DB → Lamp',
+ l:['Fixture','Lamp','Switch']},
+{m:'elec',g:'E. Lighting',c:'NavLight-Elect',n:'Navigation Lighting',t:'Lampu navigasi',
+ d:'Nav light sesuai COLREG (port/starboard/masthead/stern).',
+ f:'Nav Light Panel → Lamp',
+ l:['Port red','Starboard green','Masthead white','Stern white','Panel']},
+{m:'elec',g:'E. Lighting',c:'EmergencyLight-Elect',n:'Emergency Lighting',t:'Lampu darurat',
+ d:'Lampu jalur evakuasi dengan battery backup.',
+ f:'ESB/Battery → Emergency Lamp',
+ l:['Emergency lamp','Battery backup','Exit sign']},
+{m:'elec',g:'E. Lighting',c:'DeckLighting-Elect',n:'Deck Lighting',t:'Lampu deck',
+ d:'Floodlight & deck lighting.',
+ f:'Deck Panel → Floodlight',
+ l:['Floodlight','Spot light']},
+
+{m:'elec',g:'F. Battery & UPS',c:'Battery-Elect',n:'Battery System',t:'Baterai',
+ d:'Battery 24V/110V DC untuk kontrol & starting.',
+ f:'Charger → Battery → DC Load',
+ l:['Lead acid','NiCd','Li-ion','Charger']},
+{m:'elec',g:'F. Battery & UPS',c:'UPS-Elect',n:'UPS',t:'UPS',
+ d:'Uninterruptible Power Supply untuk beban kritis.',
+ f:'AC → Rect → Battery → Inv → Load',
+ l:['Rectifier','Battery','Inverter','Bypass']},
+{m:'elec',g:'F. Battery & UPS',c:'DCSystem-Elect',n:'DC System',t:'Distribusi DC',
+ d:'Distribusi DC untuk kontrol, alarm, emergency.',
+ f:'Battery/Rect → DC Bus → Load',
+ l:['DC bus','Breaker','Load']},
+{m:'elec',g:'F. Battery & UPS',c:'BatteryCharger-Elect',n:'Battery Charger',t:'Pengisi baterai',
+ d:'Charger untuk battery bank.',
+ f:'AC → Charger → Battery',
+ l:['Rectifier','Regulator','Voltage sensing']},
+
+{m:'elec',g:'G. Accommodation & Galley Electrical',c:'GalleyElectrical-Elect',n:'Galley Electrical',t:'Listrik dapur',
+ d:'Distribusi & peralatan listrik dapur.',
+ f:'Accom Panel → Galley → Equipment',
+ l:['Range electrical','Oven','Fryer','Steamer','Exhaust fan']},
+{m:'elec',g:'G. Accommodation & Galley Electrical',c:'LaundryElectrical-Elect',n:'Laundry Electrical',t:'Listrik laundry',
+ d:'Distribusi & peralatan listrik laundry.',
+ f:'Accom Panel → Laundry → Equipment',
+ l:['Washer','Dryer','Ironer']},
+{m:'elec',g:'G. Accommodation & Galley Electrical',c:'AccomLighting-Elect',n:'Accommodation Lighting',t:'Lampu kabin',
+ d:'Lighting kabin, mess, lounge.',
+ f:'Accom Panel → Lamp',
+ l:['Cabin lamp','Corridor','Reading light']},
+{m:'elec',g:'G. Accommodation & Galley Electrical',c:'AConboard-Elect',n:'AC Electrical',t:'AC listrik',
+ d:'Supply listrik untuk sistem AC.',
+ f:'Accom Panel → AC → Chiller',
+ l:['Chiller motor','AHU fan','Control']},
+{m:'elec',g:'G. Accommodation & Galley Electrical',c:'Intercom-Elect',n:'Intercom System',t:'Interkom',
+ d:'Komunikasi internal kapal.',
+ f:'Master → Station',
+ l:['Master station','Remote station','Wiring']},
+
+{m:'elec',g:'H. Deck & Machinery Electrical',c:'DeckMotor-Elect',n:'Deck Machinery Motor',t:'Motor deck',
+ d:'Motor untuk windlass, winch, crane, capstan.',
+ f:'Deck Panel → Starter → Motor',
+ l:['Motor','Starter','Overload','Brake release']},
+{m:'elec',g:'H. Deck & Machinery Electrical',c:'CraneElect-Elect',n:'Crane Electrical',t:'Listrik crane',
+ d:'Sistem listrik untuk cargo crane (hoist, luff, slew).',
+ f:'Deck Panel → Crane Starter → Motor',
+ l:['Hoist motor','Luff motor','Slew motor','Brake','Limit switch']},
+{m:'elec',g:'H. Deck & Machinery Electrical',c:'HatchCoverElect-Elect',n:'Hatch Cover Electrical',t:'Listrik hatch',
+ d:'Kontrol elektrik untuk hatch cover hydraulic.',
+ f:'Panel → Hydraulic PU Motor',
+ l:['Hydraulic pump motor','Control valve solenoid']},
+{m:'elec',g:'H. Deck & Machinery Electrical',c:'WindlassElect-Elect',n:'Windlass Electrical',t:'Listrik windlass',
+ d:'Motor windlass dengan starter.',
+ f:'Panel → Starter → Motor',
+ l:['Motor','Starter','Brake release','Control']},
+
+// ═══════════ CONTROL / AUTOMATION ═══════════
+{m:'ctrl',g:'A. Instrumentation',c:'PressureInstrument',n:'Pressure Measurement',t:'Ukur tekanan',
+ d:'Transmitter 4-20mA untuk tekanan.',
+ f:'Pressure → Sensor → 4-20mA',
+ l:['Transmitter','Gauge','Switch']},
+{m:'ctrl',g:'A. Instrumentation',c:'TempInstrument',n:'Temperature Measurement',t:'Ukur suhu',
+ d:'RTD / Thermocouple untuk suhu.',
+ f:'Temp → RTD → Signal',
+ l:['RTD Pt100','Thermocouple','Transmitter']},
+{m:'ctrl',g:'A. Instrumentation',c:'LevelInstrument',n:'Level Measurement',t:'Ukur level',
+ d:'Level tangki (float, DP, radar, ultrasonic).',
+ f:'Level → Sensor → Signal',
+ l:['Float','DP','Radar','Ultrasonic']},
+{m:'ctrl',g:'A. Instrumentation',c:'FlowInstrument',n:'Flow Measurement',t:'Ukur aliran',
+ d:'Flowmeter (orifice, turbine, magnetic).',
+ f:'Flow → Sensor → Signal',
+ l:['Orifice','Turbine','Magnetic','Vortex']},
+{m:'ctrl',g:'A. Instrumentation',c:'RPMInstrument',n:'RPM Measurement',t:'Ukur RPM',
+ d:'Magnetic pickup untuk RPM engine.',
+ f:'Rotation → Pickup → Pulse',
+ l:['Magnetic pickup','Tacho','Encoder']},
+{m:'ctrl',g:'A. Instrumentation',c:'PositionSensor',n:'Position Sensor',t:'Ukur posisi',
+ d:'Sensor posisi untuk rudder, valve.',
+ f:'Position → Sensor → Signal',
+ l:['Encoder','Potentiometer','LVDT']},
+{m:'ctrl',g:'A. Instrumentation',c:'VibrationSensor',n:'Vibration Sensor',t:'Ukur getaran',
+ d:'Sensor getaran untuk monitoring bearing & engine.',
+ f:'Vibration → Accelerometer → Signal',
+ l:['Accelerometer','Velocity probe','Proximity']},
+{m:'ctrl',g:'A. Instrumentation',c:'GasSensor',n:'Gas Detector',t:'Deteksi gas',
+ d:'Deteksi gas untuk cargo & machinery space.',
+ f:'Gas → Sensor → Alarm',
+ l:['HC sensor','H2S','CO','O2']},
+
+{m:'ctrl',g:'B. Control System',c:'PIDControl',n:'PID Control',t:'Kontrol PID',
+ d:'Algoritma kontrol closed-loop.',
+ f:'SP-PV → PID → Output',
+ l:['Proportional','Integral','Derivative']},
+{m:'ctrl',g:'B. Control System',c:'PLCControl',n:'PLC',t:'PLC',
+ d:'Programmable Logic Controller untuk sequence & logic.',
+ f:'Input → CPU → Output',
+ l:['CPU','DI','DO','AI','AO','Comms']},
+{m:'ctrl',g:'B. Control System',c:'DCSControl',n:'DCS',t:'Distributed Control',
+ d:'Distributed Control System untuk plant besar.',
+ f:'Field → DCS → Operator',
+ l:['Controller','HMI','Network']},
+{m:'ctrl',g:'B. Control System',c:'ControlPanel',n:'Control Panel',t:'Panel kontrol',
+ d:'Panel lokal dengan indicator & switch.',
+ f:'Signal → Panel → Operator',
+ l:['Indicator','Switch','Push button','Mimic']},
+{m:'ctrl',g:'B. Control System',c:'RemoteControl',n:'Remote Control',t:'Kontrol remote',
+ d:'Kontrol dari ECR / Bridge.',
+ f:'Remote → Controller → Equipment',
+ l:['Remote panel','Comm link']},
+{m:'ctrl',g:'B. Control System',c:'LocalControl',n:'Local Control',t:'Kontrol lokal',
+ d:'Kontrol di dekat equipment.',
+ f:'Manual → Local Panel',
+ l:['Local switch','Indicator']},
+{m:'ctrl',g:'B. Control System',c:'AutomaticControl',n:'Automatic Control',t:'Kontrol otomatis',
+ d:'Kontrol closed-loop otomatis.',
+ f:'Sensor → Controller → Actuator → Feedback',
+ l:['Setpoint','Feedback','Actuator']},
+{m:'ctrl',g:'B. Control System',c:'SafetyPLC',n:'Safety PLC / SIL',t:'Safety PLC',
+ d:'PLC dengan rating SIL untuk safety system.',
+ f:'Safety Input → SIL Logic → Safety Output',
+ l:['SIL-2/3 PLC','Redundant','Diagnostics']},
+
+{m:'ctrl',g:'C. Automation Systems',c:'MEAutomation',n:'Main Engine Automation',t:'Otomasi ME',
+ d:'Otomasi main engine: governor, safety shutdown.',
+ f:'RPM Sensor → Governor → Fuel Rack → RPM',
+ l:['RPM sensor','Governor','Fuel control','Shutdown']},
+{m:'ctrl',g:'C. Automation Systems',c:'DGAutomation',n:'Generator Automation',t:'Otomasi genset',
+ d:'Auto start, sync, load share generator.',
+ f:'Start → Sync → Close → Load Share',
+ l:['Auto start','Sync check','Load sharing','Protection']},
+{m:'ctrl',g:'C. Automation Systems',c:'BoilerAutomation',n:'Boiler Automation',t:'Otomasi boiler',
+ d:'Otomasi boiler: pressure, level, BMS.',
+ f:'Sensor → PID/BMS → Actuator',
+ l:['Pressure control','Level 3-elem','BMS','Flame safety']},
+{m:'ctrl',g:'C. Automation Systems',c:'PumpAutomation',n:'Pump Automation',t:'Otomasi pompa',
+ d:'Auto start/stop pompa, duty/standby.',
+ f:'Level/Press → Controller → Pump',
+ l:['Level switch','Pressure switch','Auto changeover']},
+{m:'ctrl',g:'C. Automation Systems',c:'SteeringAutomation',n:'Steering Automation',t:'Otomasi kemudi',
+ d:'Autopilot, FU/NFU control.',
+ f:'Command → Controller → Actuator → Rudder → Feedback',
+ l:['FU/NFU','Rudder feedback','Servo valve']},
+{m:'ctrl',g:'C. Automation Systems',c:'CargoAutomation',n:'Cargo Automation',t:'Otomasi cargo',
+ d:'Otomasi sistem cargo tanker.',
+ f:'Level/Pressure → Controller → Valve/Pump',
+ l:['Level radar','Valve control','Pump control','IG control']},
+{m:'ctrl',g:'C. Automation Systems',c:'HVACAutomation',n:'HVAC Automation',t:'Otomasi HVAC',
+ d:'Otomasi suhu & ventilasi akomodasi.',
+ f:'Temp → Controller → Damper/Chiller',
+ l:['Thermostat','Damper control','Chiller control']},
+{m:'ctrl',g:'C. Automation Systems',c:'BallastAutomation',n:'Ballast Automation',t:'Otomasi ballast',
+ d:'Otomasi ballast system.',
+ f:'Level → Controller → Valve/Pump',
+ l:['Level sensor','Valve actuator','Pump control']},
+{m:'ctrl',g:'C. Automation Systems',c:'FOWaterAutomation',n:'FW Generator Automation',t:'Otomasi FW gen',
+ d:'Otomasi fresh water generator.',
+ f:'Salinity → Controller → Valve',
+ l:['Salinometer','Control valve','Dump valve']},
+{m:'ctrl',g:'C. Automation Systems',c:'PurifierAutomation',n:'Purifier Automation',t:'Otomasi purifier',
+ d:'Otomasi purifier: sludge discharge, monitoring.',
+ f:'Timer/Sensor → Controller → Discharge',
+ l:['Timer','Sludge sensor','Control panel']},
+
+{m:'ctrl',g:'D. Engine Room Control',c:'ECRSystem',n:'Engine Control Room',t:'ECR',
+ d:'Pusat kontrol mesin.',
+ f:'ECR → All Systems',
+ l:['Main console','Alarm panel','Communication']},
+{m:'ctrl',g:'D. Engine Room Control',c:'MonitoringSystem',n:'Monitoring System',t:'Monitoring',
+ d:'Data monitoring engine room.',
+ f:'Sensors → Data → Display',
+ l:['Data logger','Trend','Display']},
+{m:'ctrl',g:'D. Engine Room Control',c:'AlarmSystem',n:'Alarm System',t:'Alarm',
+ d:'Alarm visual & audible.',
+ f:'Abnormal → Alarm → Response',
+ l:['Visual','Audible','Grouping']},
+{m:'ctrl',g:'D. Engine Room Control',c:'ShutdownSystem',n:'Shutdown System',t:'Shutdown',
+ d:'Auto shutdown saat critical.',
+ f:'Critical → Trip → Shutdown',
+ l:['Trip sensor','Trip logic']},
+{m:'ctrl',g:'D. Engine Room Control',c:'ESDSystem',n:'Emergency Shutdown',t:'ESD',
+ d:'Shutdown darurat manual/auto.',
+ f:'Emergency → ESD → Stop',
+ l:['ESD push','Trip all']},
+{m:'ctrl',g:'D. Engine Room Control',c:'AMSSystem',n:'Alarm Monitoring System (AMS)',t:'AMS',
+ d:'Sistem monitoring alarm terpusat.',
+ f:'All Alarms → AMS → Display',
+ l:['Alarm panel','Log','Printer']},
+{m:'ctrl',g:'D. Engine Room Control',c:'IASSystem',n:'Integrated Automation System',t:'IAS',
+ d:'Integrasi seluruh automation kapal.',
+ f:'All Systems → IAS → Unified',
+ l:['Integration','Monitoring','Control']},
+
+{m:'ctrl',g:'E. Propulsion Control',c:'MERemoteControl',n:'ME Remote Control',t:'Remote ME',
+ d:'Kontrol ME dari ECR/Bridge.',
+ f:'Telegraph → ECR → Governor',
+ l:['Telegraph','Control lever','Interface']},
+{m:'ctrl',g:'E. Propulsion Control',c:'GovernorControl',n:'Governor Control',t:'Governor',
+ d:'Governor RPM elektronik/hidrolik.',
+ f:'Setpoint → Governor → Fuel Rack',
+ l:['Governor','Speed sensing','Actuator']},
+{m:'ctrl',g:'E. Propulsion Control',c:'FuelControl',n:'Fuel Control',t:'Kontrol FO',
+ d:'Kontrol jumlah FO via fuel rack.',
+ f:'Command → Rack → Injection',
+ l:['Fuel rack','Actuator','Feedback']},
+{m:'ctrl',g:'E. Propulsion Control',c:'StartingSequence',n:'Starting Sequence',t:'Sequence start',
+ d:'Urutan starting ME: interlock, air, fuel.',
+ f:'Start → Interlock → Air → Fuel → Running',
+ l:['Interlock','Timer','Sequence']},
+{m:'ctrl',g:'E. Propulsion Control',c:'TurningGearInterlock',n:'Turning Gear Interlock',t:'Interlock TG',
+ d:'Mencegah start ME saat turning gear engaged.',
+ f:'TG Engaged → Interlock → No Start',
+ l:['Limit switch','Interlock relay']},
+{m:'ctrl',g:'E. Propulsion Control',c:'CPPControl',n:'CPP Control',t:'Kontrol CPP',
+ d:'Kontrol Controllable Pitch Propeller.',
+ f:'Bridge → CPP Control → Blade Pitch',
+ l:['Pitch actuator','Feedback','Oil distribution box']},
+
+{m:'ctrl',g:'F. Safety Automation',c:'FireDetection',n:'Fire Detection',t:'Deteksi api',
+ d:'Deteksi kebakaran (smoke, heat, flame).',
+ f:'Detector → FACP → Alarm',
+ l:['Smoke','Heat','Flame','FACP']},
+{m:'ctrl',g:'F. Safety Automation',c:'FireAlarm',n:'Fire Alarm',t:'Alarm kebakaran',
+ d:'Alarm kebakaran dengan panel.',
+ f:'Detector → Panel → Alarm',
+ l:['FACP','Bell','Bridge panel']},
+{m:'ctrl',g:'F. Safety Automation',c:'GasDetectionSys',n:'Gas Detection System',t:'Deteksi gas',
+ d:'Deteksi HC, H2S, CO, O2.',
+ f:'Gas → Sensor → Alarm',
+ l:['HC sensor','H2S','CO','O2']},
+{m:'ctrl',g:'F. Safety Automation',c:'MachineryAlarm',n:'Machinery Alarm',t:'Alarm mesin',
+ d:'Alarm umum machinery.',
+ f:'Abnormal → Alarm',
+ l:['Alarm panel','Buzzer']},
+{m:'ctrl',g:'F. Safety Automation',c:'PressureAlarm',n:'Pressure Alarm',t:'Alarm tekanan',
+ d:'Alarm tekanan tinggi/rendah.',
+ f:'Pressure SW → Alarm',
+ l:['Pressure switch','Alarm']},
+{m:'ctrl',g:'F. Safety Automation',c:'TemperatureAlarm',n:'Temperature Alarm',t:'Alarm suhu',
+ d:'Alarm suhu tinggi.',
+ f:'Temp SW → Alarm/Trip',
+ l:['Temp switch','Trip']},
+{m:'ctrl',g:'F. Safety Automation',c:'LevelAlarm',n:'Level Alarm',t:'Alarm level',
+ d:'Alarm level tinggi/rendah.',
+ f:'Level SW → Alarm',
+ l:['Level switch','Alarm']},
+{m:'ctrl',g:'F. Safety Automation',c:'ESDAutomation',n:'ESD Automation',t:'Otomasi ESD',
+ d:'Logika ESD untuk shutdown darurat.',
+ f:'Emergency → ESD → Stop All',
+ l:['ESD logic','Trip matrix']},
+
+{m:'ctrl',g:'G. Actuator System',c:'ElectricActuator',n:'Electric Actuator',t:'Aktuator elektrik',
+ d:'Aktuator motor listrik untuk valve.',
+ f:'Signal → Motor → Position',
+ l:['Motor','Gearbox','Position feedback']},
+{m:'ctrl',g:'G. Actuator System',c:'HydraulicActuator',n:'Hydraulic Actuator',t:'Aktuator hidrolik',
+ d:'Aktuator hidrolik untuk valve/cylinder.',
+ f:'Oil Pressure → Piston → Motion',
+ l:['Cylinder','Servo valve','Feedback']},
+{m:'ctrl',g:'G. Actuator System',c:'PneumaticActuator',n:'Pneumatic Actuator',t:'Aktuator pneumatik',
+ d:'Aktuator udara untuk valve.',
+ f:'Air → Piston/Diaphragm → Motion',
+ l:['Diaphragm','Spring','Positioner']},
+{m:'ctrl',g:'G. Actuator System',c:'ServoValve',n:'Servo Valve',t:'Servo valve',
+ d:'Valve presisi tinggi dengan signal 4-20mA.',
+ f:'Signal → Torque motor → Spool → Flow',
+ l:['Torque motor','Spool','LVDT']},
+{m:'ctrl',g:'G. Actuator System',c:'SolenoidValve',n:'Solenoid Valve',t:'Solenoid valve',
+ d:'Valve dengan aktuator solenoid on/off.',
+ f:'Signal → Solenoid → Valve',
+ l:['Coil','Spool','Manual override']},
+{m:'ctrl',g:'G. Actuator System',c:'Positioner',n:'Valve Positioner',t:'Positioner',
+ d:'Positioner untuk kontrol posisi valve akurat.',
+ f:'Signal + Feedback → Positioner → Valve',
+ l:['I/P converter','Feedback','Cam']},
+
+{m:'ctrl',g:'H. Bridge & Navigation',c:'GyroCompass',n:'Gyrocompass',t:'Gyro',
+ d:'Referensi heading kapal.',
+ f:'Gyro → Heading → Repeater',
+ l:['Gyro','Repeater','Interface']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'MagneticCompass',n:'Magnetic Compass',t:'Kompas magnetik',
+ d:'Kompas magnetik dengan binnacle.',
+ f:'Magnet → Compass → Heading',
+ l:['Binnacle','Compass','Deviation card']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'Autopilot',n:'Autopilot',t:'Autopilot',
+ d:'Auto steering sesuai course.',
+ f:'Course → Autopilot → Steering',
+ l:['Control unit','Gyro input','Rudder feedback']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'RadarARPA',n:'Radar / ARPA',t:'Radar',
+ d:'Radar dengan ARPA untuk collision avoidance.',
+ f:'Radar Pulse → Echo → Display',
+ l:['Scanner','Transceiver','Display','ARPA']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'ECDIS',n:'ECDIS',t:'ECDIS',
+ d:'Electronic Chart Display & Information System.',
+ f:'GPS + Chart → ECDIS → Display',
+ l:['Computer','Chart','GPS input','AIS input']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'GPS',n:'GPS / DGPS',t:'GPS',
+ d:'Global Positioning System untuk posisi kapal.',
+ f:'Satellite → GPS → Position',
+ l:['Antenna','Receiver','Display']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'AIS',n:'AIS',t:'AIS',
+ d:'Automatic Identification System.',
+ f:'GPS + Ship Data → AIS → Transmit/Receive',
+ l:['Transponder','VHF antenna','Display']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'EchoSounder',n:'Echo Sounder',t:'Echo sounder',
+ d:'Mengukur kedalaman air.',
+ f:'Transducer → Sound Pulse → Depth',
+ l:['Transducer','Display','Recorder']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'SpeedLog',n:'Speed Log',t:'Speed log',
+ d:'Mengukur kecepatan kapal (Doppler/EM).',
+ f:'Sensor → Speed',
+ l:['Doppler','EM log','Display']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'VDR',n:'VDR',t:'VDR',
+ d:'Voyage Data Recorder (black box kapal).',
+ f:'All Data → VDR → Recording',
+ l:['Data interface','Storage','Playback']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'BNWAS',n:'BNWAS',t:'BNWAS',
+ d:'Bridge Navigational Watch Alarm System.',
+ f:'Timer → Alarm → Bridge',
+ l:['Reset button','Timer','Alarm']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'GMDSS',n:'GMDSS',t:'GMDSS',
+ d:'Global Maritime Distress & Safety System.',
+ f:'Distress → Satellite/VHF → Rescue',
+ l:['Inmarsat','VHF DSC','MF/HF','EPIRB','SART','NAVTEX']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'WeatherFax',n:'Weather Fax',t:'Weather fax',
+ d:'Penerima weather fax.',
+ f:'Signal → Weather Chart',
+ l:['Receiver','Printer']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'Anemometer',n:'Anemometer',t:'Anemometer',
+ d:'Mengukur kecepatan & arah angin.',
+ f:'Wind → Anemometer → Display',
+ l:['Sensor','Display']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'EngineTelegraph',n:'Engine Telegraph',t:'Telegraph',
+ d:'Komunikasi perintah engine bridge-ECR.',
+ f:'Bridge Lever → ECR → Engine',
+ l:['Transmitter','Receiver','Logger']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'SteeringControl',n:'Steering Control',t:'Kontrol kemudi',
+ d:'Kontrol steering di bridge (wheel, joystick, NFU).',
+ f:'Wheel/Joystick → Steering Gear',
+ l:['Wheel','Joystick','NFU lever','Follow-up']},
+{m:'ctrl',g:'H. Bridge & Navigation',c:'NavInterface',n:'Navigation Interface',t:'Interface nav',
+ d:'Interface GPS/ECDIS/Radar dengan machinery.',
+ f:'Nav Data ↔ Machinery Systems',
+ l:['NMEA','IEC 61162','Ethernet']},
+];
+const MOD={mech:{label:'MECHANICAL — SHIP SYSTEMS',desc:'Body & Muscle: seluruh permesinan mekanikal kapal.',cls:'m'},
+elec:{label:'ELECTRICAL — SHIP SYSTEMS',desc:'Energy & Blood: seluruh sistem elektrikal kapal.',cls:'e'},
+ctrl:{label:'CONTROL / AUTOMATION — SHIP SYSTEMS',desc:'Brain & Nervous: seluruh sistem kontrol & navigasi.',cls:'c'}};
+
+function render(){
+  const c=document.getElementById('content');let html='';
+  ['mech','elec','ctrl'].forEach(m=>{
+    const items=D.filter(x=>x.m===m);
+    const groups=[...new Set(items.map(x=>x.g))];
+    const mod=MOD[m];
+    html+=`<section id="${m}" class="${mod.cls}"><h2><span class="bar"></span>${mod.label}</h2><p class="desc">${mod.desc} — <b>${items.length} komponen</b></p>`;
+    groups.forEach(g=>{
+      const gi=items.filter(x=>x.g===g);
+      html+=`<div class="sub"><h4>${g}</h4><div class="grid">`;
+      gi.forEach(it=>{html+=`<div class="item ${mod.cls}" data-code="${it.c}"><div class="code">${it.c}</div><div class="name">${it.n}</div><div class="tag">${it.t}</div></div>`;});
+      html+=`</div></div>`;
+    });
+    html+=`</section>`;
+  });
+  c.innerHTML=html;
+  c.querySelectorAll('.item').forEach(el=>{el.onclick=()=>openModal(el.dataset.code);});
+  document.getElementById('wm1').textContent=D.filter(x=>x.m==='mech').length+' komponen';
+  document.getElementById('wm2').textContent=D.filter(x=>x.m==='elec').length+' komponen';
+  document.getElementById('wm3').textContent=D.filter(x=>x.m==='ctrl').length+' komponen';
+  document.getElementById('count').textContent='Total: '+D.length+' komponen';
+}
+function closeWelcome(){document.getElementById('welcomeOverlay').classList.add('hidden');setTimeout(()=>{document.getElementById('welcomeOverlay').style.display='none';},350);}
+function goToModule(mod){closeWelcome();setTimeout(()=>{document.getElementById('content').scrollIntoView({behavior:'smooth',block:'start'});document.querySelector(`.fbtn[data-filter="${mod}"]`)?.click();},250);}
+document.getElementById('welcomeOverlay').addEventListener('click',e=>{if(e.target.id==='welcomeOverlay')closeWelcome();});
+
+function openModal(code){
+  const it=D.find(x=>x.c===code);if(!it){alert('Not found: '+code);return;}
+  const mod=MOD[it.m];
+  const q=encodeURIComponent(it.n+' ship marine '+it.c);
+  const qs=encodeURIComponent(it.n+' ship');
+  document.getElementById('mc').innerHTML=`
+    <button class="close" onclick="closeModal()">✕</button>
+    <div class="mcode">${it.c}</div>
+    <h3>${it.n}</h3>
+    <span class="badge ${mod.cls}">${mod.label}</span>
+    <p>${it.d}</p>
+    <div class="flow">${it.f}</div>
+    <span class="lbl"><b>Komponen / Bagian terkait:</b></span>
+    <ul>${it.l.map(x=>'<li>'+x+'</li>').join('')}</ul>
+    <span class="lbl">Cari lebih dalam di sumber eksternal:</span>
+    <div class="links">
+      <a class="g" target="_blank" rel="noopener" href="https://www.google.com/search?q=${q}">🔎 Google</a>
+      <a class="y" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${q}">▶ YouTube</a>
+      <a class="w" target="_blank" rel="noopener" href="https://en.wikipedia.org/w/index.php?search=${qs}">📖 Wiki</a>
+      <a class="p" target="_blank" rel="noopener" href="https://www.pinterest.com/search/pins/?q=${qs}">📌 Pinterest</a>
+      <a class="s" target="_blank" rel="noopener" href="https://www.google.com/search?q=SOLAS+${qs}">⛑ SOLAS</a>
+      <a class="mr" target="_blank" rel="noopener" href="https://www.google.com/search?q=MARPOL+${qs}">🌊 MARPOL</a>
+      <a class="i" target="_blank" rel="noopener" href="https://www.imo.org/en/search/results?q=${qs}">🏛 IMO</a>
+      <a class="cl" target="_blank" rel="noopener" href="https://www.google.com/search?q=class+${qs}">📋 Class</a>
+    </div>`;
+  document.getElementById('mo').classList.add('active');
+}
+function closeModal(){document.getElementById('mo').classList.remove('active');}
+document.getElementById('mo').addEventListener('click',e=>{if(e.target.id==='mo')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('mo').classList.contains('active'))closeModal();else if(!document.getElementById('welcomeOverlay').classList.contains('hidden'))closeWelcome();}});
+
+document.querySelectorAll('nav .fbtn[data-filter]').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('nav .fbtn[data-filter]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('section').forEach(sec=>{sec.style.display=(f==='all'||sec.id===f)?'':'none';});
+  };
+});
+document.getElementById('q').addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  document.querySelectorAll('section').forEach(sec=>{
+    let anyV=false;
+    sec.querySelectorAll('.sub').forEach(sub=>{
+      let sv=false;
+      sub.querySelectorAll('.item').forEach(it=>{
+        const txt=(it.dataset.code+' '+it.querySelector('.name').textContent+' '+it.querySelector('.tag').textContent).toLowerCase();
+        const ok=!q||txt.includes(q);
+        it.style.display=ok?'':'none';
+        if(ok){sv=true;anyV=true;}
+      });
+      sub.style.display=sv?'':'none';
+    });
+    sec.style.opacity=(anyV||!q)?'1':'.3';
+  });
+});
+render();
+console.log('✅ Master Shipboard Suite loaded —',D.length,'komponen');
+</script>
+</body>
+</html>
